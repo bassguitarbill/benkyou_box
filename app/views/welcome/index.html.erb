@@ -1,3 +1,8 @@
-<h1>おはよう、ビルさん</h1>
-<ul>
-</ul>
+<% if current_user %>
+  <h1>おはよう、<%= current_user.japanese_name %>さん！</h1>
+  <h1><%= I18n.t 'name_greeting', current_user.japanese_name %>
+<% else %>
+  <h1><%= I18n.t 'hello' %></h1>
+<% end %>
+
+
