@@ -1,7 +1,7 @@
 <% if current_user %>
-  <h1><%= I18n.t('name_greeting', name: current_user.name, japanese_name: current_user.japanese_name) %>
+  <h1><%= I18n.t 'name_greeting', name: current_user.name, japanese_name: current_user.japanese_name, locale: current_locale %>
 <% else %>
-  <h1><%= I18n.t 'hello' %></h1>
+  <h1><%= I18n.t 'hello', locale: current_locale %></h1>
 <% end %>
 
 

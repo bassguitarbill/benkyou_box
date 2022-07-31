@@ -10,8 +10,8 @@
   </head>
 
   <body>
-    <%= render "layouts/lang" %>
     <%= render "layouts/auth" %>
+    <%= render "layouts/lang" if current_user %>
     <%= yield %>
   </body>
 </html>
