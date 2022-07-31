@@ -1,6 +1,6 @@
 ja:
   hello: "いらっしゃいらっしゃいませ！"
-  name_greeting: "おはよう、%{name}さん！"
+  name_greeting: "おはよう、%{japanese_name}さん！"
   passwordless:
     sessions:
       new:
