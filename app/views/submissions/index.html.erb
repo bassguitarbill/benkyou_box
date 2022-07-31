@@ -2,6 +2,12 @@
 
 <h1>Submissions</h1>
 
+<%= link_to "< #{day_before}", submissions_path(date: day_before.strftime("%Y-%m-%d")) %>
+<span><%= day_current.strftime("%Y-%m-%d") %></span>
+<% unless day_current == Date.today %>
+  <%= link_to "#{day_after} >", submissions_path(date: day_after.strftime("%Y-%m-%d")) %>
+<% end %>
+
 <div id="submissions">
   <% @submissions.each do |submission| %>
     <%= render submission %>
@@ -12,3 +18,5 @@
 </div>
 
 <%= link_to "New submission", new_submission_path %>
+<br />
+<%= link_to "Go home", root_path %>

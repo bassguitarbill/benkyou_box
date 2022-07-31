@@ -3,7 +3,30 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    @submissions = Submission.today.all
+    if date = params[:date]
+      @submissions = Submission.created_on_date date
+    else
+      @submissions = Submission.today
+    end
+    @submissions = @submissions.all
+  end
+
+  helper_method def day_before
+    date = Date.today
+    date = Date.parse(params[:date]) if params[:date]
+    date - 1.day
+  end
+
+  helper_method def day_current
+    date = Date.today
+    date = Date.parse(params[:date]) if params[:date]
+    date
+  end
+
+  helper_method def day_after
+    date = Date.today
+    date = Date.parse(params[:date]) if params[:date]
+    date + 1.day
   end
 
   # GET /submissions/1 or /submissions/1.json
