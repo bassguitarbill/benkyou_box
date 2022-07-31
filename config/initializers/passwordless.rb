@@ -1,2 +1,1 @@
-Passwordless.default_from_address = "bill@billros.si"
-Passwordless.parent_mailer = "ActionMailer::Base"
+Passwordless.default_from_address = "benkyoubox0@gmail.com"
