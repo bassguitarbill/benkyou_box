@@ -1,0 +1,12 @@
+<h1>Hello Prompts</h1>
+
+  <%= form_with do |form| %>
+  <div style="display: flex; justify-content: space-between; margin-left: 20%; margin-right: 20%;">
+    <%= render partial: 'prompt_column', locals: { data: @lengths, name: "length", form: form } %>
+    <%= render partial: 'prompt_column', locals: { data: @topics, name: "topic", form: form } %>
+    <%= render partial: 'prompt_column', locals: { data: @grammars, name: "grammar", form: form } %>
+</div>
+<button id="submit-prompts">Submit</button>
+  <% end %>
+
+<%= javascript_pack_tag "prompts" %>

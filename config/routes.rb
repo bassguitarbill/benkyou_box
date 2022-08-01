@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   root "welcome#index"
   passwordless_for :users, at: '/', as: :auth
 
+  get "prompts", to: "prompts#index"
+  post "prompts", to: "prompts#add_new"
+
   namespace :api do
     namespace :v1 do
       namespace :prompts do
