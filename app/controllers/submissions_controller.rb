@@ -3,30 +3,19 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions or /submissions.json
   def index
-    if date = params[:date]
-      @submissions = Submission.created_on_date date
-    else
-      @submissions = Submission.today
-    end
-    @submissions = @submissions.all
+    @submissions = Submission.created_on_date(params[:date]).all
   end
 
   helper_method def day_before
-    date = Date.today
-    date = Date.parse(params[:date]) if params[:date]
-    date - 1.day
+    param_date - 1.day
   end
 
   helper_method def day_current
-    date = Date.today
-    date = Date.parse(params[:date]) if params[:date]
-    date
+    param_date
   end
 
   helper_method def day_after
-    date = Date.today
-    date = Date.parse(params[:date]) if params[:date]
-    date + 1.day
+    param_date + 1.day
   end
 
   # GET /submissions/1 or /submissions/1.json
@@ -90,5 +79,9 @@ class SubmissionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def submission_params
       params.require(:submission).permit(:prompt, :response)
+    end
+
+    helper_method def param_date
+      params[:date] ? Date.parse(params[:date]) : Date.today
     end
 end

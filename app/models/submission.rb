@@ -2,11 +2,16 @@ class Submission < ApplicationRecord
   belongs_to :user
 
   def self.today
-    where created_at: Date.today.beginning_of_day..Date.today.end_of_day
+    self.created_on_date nil
   end
 
   def self.created_on_date(date)
-    d = Date.parse date
-    where created_at: d.beginning_of_day..d.end_of_day
+    
+    date = date ? Date.parse(date) : Date.today
+    offset = date.in_time_zone('Eastern Time (US & Canada)').utc_offset
+    start = date.in_time_zone('Eastern Time (US & Canada)').beginning_of_day - offset
+    ending = date.in_time_zone('Eastern Time (US & Canada)').end_of_day - offset
+
+    where created_at: start..ending
   end
 end

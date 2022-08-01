@@ -1,3 +1,5 @@
+<button id="generate_button">Generate Prompt</button>
+
 <%= form_with(model: submission) do |form| %>
   <% if submission.errors.any? %>
     <div style="color: red">
@@ -10,6 +12,7 @@
       </ul>
     </div>
   <% end %>
+
 
   <div>
     <%= form.label :prompt, style: "display: block" %>
@@ -25,3 +28,4 @@
     <%= form.submit %>
   </div>
 <% end %>
+<%= javascript_pack_tag 'submissions' %>
