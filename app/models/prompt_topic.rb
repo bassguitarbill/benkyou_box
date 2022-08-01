@@ -1,0 +1,2 @@
+class PromptTopic < PromptField
+end

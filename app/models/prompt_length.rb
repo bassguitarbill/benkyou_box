@@ -1,0 +1,2 @@
+class PromptLength < PromptField
+end

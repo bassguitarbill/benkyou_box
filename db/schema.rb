@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_31_111412) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_31_222939) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,33 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_111412) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["authenticatable_type", "authenticatable_id"], name: "authenticatable"
+  end
+
+  create_table "prompt_grammars", force: :cascade do |t|
+    t.string "content"
+    t.integer "weight", default: 1
+    t.bigint "added_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_by_id"], name: "index_prompt_grammars_on_added_by_id"
+  end
+
+  create_table "prompt_lengths", force: :cascade do |t|
+    t.string "content"
+    t.integer "weight", default: 1
+    t.bigint "added_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_by_id"], name: "index_prompt_lengths_on_added_by_id"
+  end
+
+  create_table "prompt_topics", force: :cascade do |t|
+    t.string "content"
+    t.integer "weight", default: 1
+    t.bigint "added_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_by_id"], name: "index_prompt_topics_on_added_by_id"
   end
 
   create_table "submissions", force: :cascade do |t|
@@ -46,5 +73,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_111412) do
     t.string "locale"
   end
 
+  add_foreign_key "prompt_grammars", "users", column: "added_by_id"
+  add_foreign_key "prompt_lengths", "users", column: "added_by_id"
+  add_foreign_key "prompt_topics", "users", column: "added_by_id"
   add_foreign_key "submissions", "users"
 end

@@ -1,0 +1,2 @@
+class PromptGrammar < PromptField
+end
