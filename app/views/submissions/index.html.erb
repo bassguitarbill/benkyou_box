@@ -4,7 +4,7 @@
 
 <%= link_to "< #{day_before}", submissions_path(date: day_before.strftime("%Y-%m-%d")) %>
 <span><%= day_current.strftime("%Y-%m-%d") %></span>
-<% unless day_current == Date.today %>
+<% unless day_current == Date.current %>
   <%= link_to "#{day_after} >", submissions_path(date: day_after.strftime("%Y-%m-%d")) %>
 <% end %>
 

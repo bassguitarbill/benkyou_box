@@ -82,6 +82,6 @@ class SubmissionsController < ApplicationController
     end
 
     helper_method def param_date
-      params[:date] ? Date.parse(params[:date]) : Date.today
+      params[:date] ? Date.parse(params[:date]) : Date.current
     end
 end
