@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Passwordless::ControllerHelpers # <-- This!
 
+  around_action :set_time_zone
+
   helper_method :current_user
   helper_method :current_locale
 
@@ -17,5 +19,9 @@ class ApplicationController < ActionController::Base
   def require_user!
     return if current_user
     redirect_to root_path, flash: { error: 'You are not worthy!' }
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone('Eastern Time (US & Canada)', &block)
   end
 end
