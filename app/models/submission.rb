@@ -9,8 +9,8 @@ class Submission < ApplicationRecord
     
     date = date ? Date.parse(date) : Date.today
     offset = date.in_time_zone('Eastern Time (US & Canada)').utc_offset
-    start = date.in_time_zone('Eastern Time (US & Canada)').beginning_of_day - offset
-    ending = date.in_time_zone('Eastern Time (US & Canada)').end_of_day - offset
+    start = date.in_time_zone('UTC').beginning_of_day - offset
+    ending = date.in_time_zone('UTC').end_of_day - offset
 
     where created_at: start..ending
   end
