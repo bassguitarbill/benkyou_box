@@ -7,7 +7,7 @@ class PromptsController < ApplicationController
 
   def add_new
     PromptField.descendants.each{ |c| add_prompt_fragments c }
-    redirect_to '/prompts'
+    redirect_to prompts_path
   end
 
   private
