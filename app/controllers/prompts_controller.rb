@@ -6,15 +6,14 @@ class PromptsController < ApplicationController
   end
 
   def add_new
-    add_prompt_fragments PromptLength, "length"
-    add_prompt_fragments PromptTopic, "topic"
-    add_prompt_fragments PromptGrammar, "grammar"
+    PromptField.descendants.each{ |c| add_prompt_fragments c }
     redirect_to '/prompts'
   end
 
   private
 
-  def add_prompt_fragments(fragment_class, fragment_name)
+  def add_prompt_fragments(fragment_class)
+    fragment_name = fragment_class.fragment_type
     arr = []
     for k in params.keys.filter{|k| k.start_with? fragment_name}
 

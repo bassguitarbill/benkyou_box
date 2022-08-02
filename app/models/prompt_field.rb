@@ -1,4 +1,5 @@
 class PromptField < ApplicationRecord
+
   self.abstract_class = true
   def self.weighted_random
     # TODO: there's a deep magic way to do this
