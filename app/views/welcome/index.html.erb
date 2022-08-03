@@ -1,23 +1,2 @@
-<% if current_user %>
-  <h1><%= I18n.t 'name_greeting', name: current_user.name, japanese_name: current_user.japanese_name, locale: current_locale %></h1>
-<% else %>
-  <h1><%= I18n.t 'hello', locale: current_locale %></h1>
-<% end %>
-
-<% if current_user %>
-  <% my_daily_submissions = current_user.submissions.today %>
-  <% if my_daily_submissions.any? %>
-    <p>You've completed <%= my_daily_submissions.count %> <%= "submission".pluralize my_daily_submissions.count %> today!</p>
-    <%= link_to "Submit more?", new_submission_path %>
-  <% else %>
-    <p>You haven't completed any submissions today!<p>
-    <%= link_to "Let's fix that!", new_submission_path %>
-  <% end %>
-
-  <% for u in User.where.not(id: current_user.id) %>
-    <% uds = u.submissions.today %>
-    <p><%= u.name %> has completed <%= uds.count %> <%= "submission".pluralize(uds.count) %> today.</p>
-  <% end %>
-<% end %>
-
+<%= react_component('Welcome', user: current_user) %>
 
