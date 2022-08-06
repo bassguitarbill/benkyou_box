@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user!
+    return if current_user
     redirect_to auth.sign_in_path, flash: { error: 'You are not worthy!' }
   end
 
