@@ -8,5 +8,11 @@ class Api::V1::SubmissionsController < ApplicationController
 
     render json: users
   end
+
+  def daily
+    user = User.find(params[:user])
+    submissions = user.submissions.created_on_date params[:date]
+    render json: { user: user, submissions: submissions }
+  end
 end
 

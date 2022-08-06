@@ -23,8 +23,13 @@ function CurrentUser({ user }) {
   }
 }
 
-function OtherUser({ name, count }) {
-  return <p>{`${name} has completed ${count} ${sp(count)} today.`}</p>
+function OtherUser({ name, id, count }) {
+  return (
+    <div>
+      <p>{`${name} has completed ${count} ${sp(count)} today.`}</p>
+      <Link to={`/submissions?user=${id}`}>{`See ${name}'s submissions`}</Link>
+    </div>
+  );
 }
 
 export default function Welcome() {
@@ -41,7 +46,7 @@ export default function Welcome() {
     <If condition={true}>
       <CurrentUser user={currentUserCount} />
       <For each='user' of={ otherUserCounts }>
-        <OtherUser key={user.id} name={user.name} count={user.count} />
+        <OtherUser key={user.id} id={user.id} name={user.name} count={user.count} />
       </For>
     </If>
   );
