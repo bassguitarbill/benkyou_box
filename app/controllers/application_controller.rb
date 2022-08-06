@@ -19,11 +19,14 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user!
-    return if current_user || request.path == auth.sign_in_path || (params[:token] && request.path == auth.token_sign_in_path)
     redirect_to auth.sign_in_path, flash: { error: 'You are not worthy!' }
   end
 
   def set_time_zone(&block)
     Time.use_zone('Eastern Time (US & Canada)', &block)
   end
+end
+
+::Passwordless::SessionsController.class_eval do
+  skip_before_action :require_user!
 end
