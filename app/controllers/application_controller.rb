@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user!
-    return if current_user || request.path == auth.sign_in_path || (params[:token] && request.path == auth.token_sign_in_path)
+    #return if current_user || request.path == auth.sign_in_path || (params[:token] && request.path == auth.token_sign_in_path)
     redirect_to auth.sign_in_path, flash: { error: 'You are not worthy!' }
   end
 
