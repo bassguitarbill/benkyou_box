@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { Link } from 'react-router-dom';
 
 import { UserContext } from './App';
+import Submission from './Submission';
 import { useQuery } from '../util';
 
 function getCurrentDate() {
@@ -14,7 +15,7 @@ function getDate(props) {
 }
 
 function getUser(props) {
-  if (!props.user) return useContext(UserContext);
+  if (!props.user) return useContext(UserContext).id;
   return props.user;
 }
 
@@ -38,12 +39,14 @@ export default function Submissions() {
   return (
     <>
       <p>{user?.name}</p>
-      <p>{date.toISODate()}</p>
       <Link to={`/submissions?date=${yesterday}&user=${userId}`}>Yesterday</Link>
+      <span>{date.toISODate()}</span>
       <If condition={date.toISODate() !== getCurrentDate().toISODate()}>
         <Link to={`/submissions?date=${tomorrow}&user=${userId}`}>Tomorrow</Link>
       </If>
-      <p>{JSON.stringify(submissions)}</p>
+      <For each='submission' of={submissions.submissions}>
+        <Submission key={submission.id} submission={submission} />
+      </For>
     </>
   );
 }
