@@ -21,10 +21,10 @@ export default function App({ user }) {
     <UserContext.Provider value={user}>
       <Router>
         <Link to="/">Home</Link>
+        <Switch>
           <Route path="/submissions/new">
             <NewSubmission />
           </Route>
-        <Switch>
           <Route path="/submissions/">
             <Submissions />
           </Route>

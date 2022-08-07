@@ -30,8 +30,10 @@ export default function NewSubmission() {
       body: JSON.stringify({
         prompt,
         response,
-        authenticity_token: csrfToken,
       }),
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     }).then(() => setShouldRedirect(true));
   };
 

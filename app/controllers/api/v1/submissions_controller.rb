@@ -16,10 +16,17 @@ class Api::V1::SubmissionsController < ApplicationController
   end
 
   def submit
-    submission = Submission.new(params)
-    submission.user = current_user.id
+    # TODO: This doesn't seem like the safest way to do this
+    submission = Submission.new(JSON.parse(request.body.read))
+    submission.user = current_user
     submission.save
     submission.id
   end
+
+  private
+  def submission_params
+    request.body.read.permit(:prompt, :response)
+  end
+
 end
 

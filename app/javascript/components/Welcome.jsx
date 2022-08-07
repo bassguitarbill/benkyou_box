@@ -10,7 +10,8 @@ function CurrentUser({ user }) {
     return (
       <div>
         <p>{`You've completed ${count} ${sp(count)} today!`}</p>
-        <Link to="/submissions">{'Submit more?'}</Link>
+        <Link to="/submissions">{'See mine'}</Link>
+        <Link to="/submissions/new">{'Submit more?'}</Link>
       </div>
     );
   } else {
