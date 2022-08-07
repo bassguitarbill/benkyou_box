@@ -44,11 +44,12 @@ export default function Welcome() {
   }, []);
 
   return (
-    <If condition={true}>
+    <>
       <CurrentUser user={currentUserCount} />
       <For each='user' of={ otherUserCounts }>
         <OtherUser key={user.id} id={user.id} name={user.name} count={user.count} />
       </For>
-    </If>
+      <Link to="/prompts">Manage Prompts</Link>
+    </>
   );
 }

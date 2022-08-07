@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :prompts do
         get "generate"
+        get "fetch"
+        put "update"
       end
       namespace :submissions do
         get "today_counts"
