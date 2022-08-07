@@ -1,83 +1,44 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
 
-export default function x(_props) {
-  const [counter, setCounter] = useState(0);
+import Welcome from './Welcome';
+import Submissions from './Submissions';
+import NewSubmission from './NewSubmission';
+import Prompts from './Prompts';
+
+App.propTypes = {
+  user: PropTypes.string
+};
+
+const UserContext = React.createContext(null);
+export default function App({ user }) {
   return (
-    <>
-    <h1>No Way! No Way! No Way!</h1>
-    <p>どういたしまして</p>
-    <p>{counter}</p>
-    <button onClick={setCounter.bind(null, counter + 1)}>Enhance!</button>
-    <a href="/other">Let's go</a>
-    <BasicExample />
-    </>
-  );
-}
-function BasicExample() {
-  return (
-    <Router>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-        </ul>
-
-        <hr />
-
-        {/*
-          A <Switch> looks through all its children <Route>
-          elements and renders the first one whose path
-          matches the current URL. Use a <Switch> any time
-          you have multiple routes, but you want only one
-          of them to render at a time
-        */}
+    <UserContext.Provider value={user}>
+      <Router>
+        <Link to="/">Home</Link>
         <Switch>
-          <Route exact path="/">
-            <Home />
+          <Route path="/submissions/new">
+            <NewSubmission />
           </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/submissions/">
+            <Submissions />
           </Route>
-          <Route path="/dashboard">
-            <Dashboard />
+          <Route path="/prompts/">
+            <Prompts />
+          </Route>
+          <Route path="*">
+            <Welcome />
           </Route>
         </Switch>
-      </div>
-    </Router>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
-// You can think of these components as "pages"
-// in your app.
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-
-function About() {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
-}
+export { UserContext }
