@@ -9,6 +9,7 @@ import {
 
 import Welcome from './Welcome';
 import Submissions from './Submissions';
+import NewSubmission from './NewSubmission';
 
 App.propTypes = {
   user: PropTypes.string
@@ -20,6 +21,9 @@ export default function App({ user }) {
     <UserContext.Provider value={user}>
       <Router>
         <Link to="/">Home</Link>
+          <Route path="/submissions/new">
+            <NewSubmission />
+          </Route>
         <Switch>
           <Route path="/submissions/">
             <Submissions />

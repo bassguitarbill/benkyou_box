@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Submission({ submission }) {
-  const { id, prompt, response } = submission;
+  const { /*id,*/ prompt, response } = submission;
   return (
     <div>
       <dl>

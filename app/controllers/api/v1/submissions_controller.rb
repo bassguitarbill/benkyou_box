@@ -14,5 +14,12 @@ class Api::V1::SubmissionsController < ApplicationController
     submissions = user.submissions.created_on_date params[:date]
     render json: { user: user, submissions: submissions }
   end
+
+  def submit
+    submission = Submission.new(params)
+    submission.user = current_user.id
+    submission.save
+    submission.id
+  end
 end
 

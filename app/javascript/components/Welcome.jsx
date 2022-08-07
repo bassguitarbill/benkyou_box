@@ -17,7 +17,7 @@ function CurrentUser({ user }) {
     return (
       <div>
         <p>{`You haven't completed any ${sp(0)} today!`}</p>
-        <Link to="/submissions">{'Let\'s fix that!'}</Link>
+        <Link to="/submissions/new">{'Let\'s fix that!'}</Link>
       </div>
     );
   }

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       namespace :submissions do
         get "today_counts"
         get "daily"
+        post "submit"
       end
     end
   end
