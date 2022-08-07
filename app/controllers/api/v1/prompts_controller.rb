@@ -29,7 +29,11 @@ class Api::V1::PromptsController < ApplicationController
     for e in entries do
       entry = col_class.find_by_id(e['id'])
       if entry
-        entry.update(content: e['content'], weight: e['weight'])
+        if e['content'].present? || e['weight'].present?
+          entry.update(content: e['content'], weight: e['weight'])
+        else
+          entry.delete
+        end
       else
         col_class.create(content: e['content'], weight: e['weight'], id: e['id'], added_by_id: current_user.id)
       end

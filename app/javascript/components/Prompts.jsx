@@ -27,7 +27,7 @@ export default function Prompts() {
   const [lengths, setLengths] = useState([]);
   const [topics, setTopics] = useState([]);
   const [grammars, setGrammars] = useState([]);
-
+  const [shouldReload, setShouldReload] = useState(false);
 
   function addEntry(column, columnSetter) {
     return function() {
@@ -55,8 +55,8 @@ export default function Prompts() {
       setLengths(lengths);
       setTopics(topics);
       setGrammars(grammars);
-    });
-  }, []);
+    }).then(() => setShouldReload(false));
+  }, [shouldReload]);
 
   const submit = () => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content
@@ -70,7 +70,7 @@ export default function Prompts() {
       headers: {
         'X-CSRF-Token': csrfToken,
       },
-    })//.then(() => setShouldRedirect(true));
+    }).then(() => setShouldReload(true));
   };
 
   return (
