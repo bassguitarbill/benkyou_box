@@ -2,6 +2,9 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
+import Button from 'react-bootstrap/button';
+import Card from 'react-bootstrap/card';
+
 function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
 
 function CurrentUser({ user }) {
@@ -10,15 +13,22 @@ function CurrentUser({ user }) {
     return (
       <div>
         <p>{`You've completed ${count} ${sp(count)} today!`}</p>
-        <Link to="/submissions">{'See mine'}</Link>
-        <Link to="/submissions/new">{'Submit more?'}</Link>
+        
+        <Link to="/submissions">
+          <Button variant="primary">{'See mine'}</Button>
+        </Link>
+        <Link to="/submissions/new">
+          <Button variant="secondary">{'Submit more?'}</Button>
+        </Link>
       </div>
     );
   } else {
     return (
       <div>
         <p>{`You haven't completed any ${sp(0)} today!`}</p>
-        <Link to="/submissions/new">{'Let\'s fix that!'}</Link>
+        <Link to="/submissions/new">
+          <Button variant="primary">{'Let\'s fix that!'}</Button>
+        </Link>
       </div>
     );
   }
@@ -28,7 +38,9 @@ function OtherUser({ name, id, count }) {
   return (
     <div>
       <p>{`${name} has completed ${count} ${sp(count)} today.`}</p>
-      <Link to={`/submissions?user=${id}`}>{`See ${name}'s submissions`}</Link>
+      <Link to={`/submissions?user=${id}`}>
+        <Button variant="primary">{`See ${name}'s submissions`}</Button>
+      </Link>
     </div>
   );
 }
@@ -45,9 +57,13 @@ export default function Welcome() {
 
   return (
     <>
-      <CurrentUser user={currentUserCount} />
+      <Card body>
+        <CurrentUser user={currentUserCount} />
+      </Card>
       <For each='user' of={ otherUserCounts }>
-        <OtherUser key={user.id} id={user.id} name={user.name} count={user.count} />
+        <Card body>
+          <OtherUser key={user.id} id={user.id} name={user.name} count={user.count} />
+        </Card>
       </For>
       <Link to="/prompts">Manage Prompts</Link>
     </>
