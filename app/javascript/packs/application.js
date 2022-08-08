@@ -20,4 +20,6 @@ console.log('Hello World from Webpacker')
 var componentRequireContext = require.context("components", true);
 var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
+console.log('Before bootstrap import')
 import 'bootstrap/dist/css/bootstrap.min.css';
+console.log('After bootstrap import')
