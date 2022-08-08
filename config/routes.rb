@@ -17,5 +17,6 @@ Rails.application.routes.draw do
       end
     end
   end
-  get "*path" => redirect("/")
+  get "prompts" => redirect("/")
+  get "submissions" => redirect("/")
 end
