@@ -2,8 +2,8 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
-import Button from 'react-bootstrap/button';
-import Card from 'react-bootstrap/card';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
 
