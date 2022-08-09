@@ -6,4 +6,8 @@ class User < ApplicationRecord
   def submissions
     Submission.where(user: self)
   end
+
+  def has_discord?
+    discord_username.present? && discord_id.present? && discord_discriminator.present?
+  end
 end
