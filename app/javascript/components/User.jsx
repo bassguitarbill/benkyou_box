@@ -29,13 +29,36 @@ export default function User() {
 
   return (
     <div>
-      <div><label htmlFor="name">Name:</label><input name="name" onChange={setField(setName)} value={name} /></div>
-      <div><label htmlFor="japaneseName">Japanese Name:</label><input name="japaneseName" onChange={setField(setJapaneseName)} value={japaneseName} /></div>
-      <div><label htmlFor="email">Email Address:</label><input name="email" onChange={setField(setEmail)} value={email} /></div>
-      <div><label htmlFor="discordUsername">Discord Username:</label><input name="discordUsername" onChange={setField(setDiscordUsername)} value={discordUsername} /></div>
-      <div><label htmlFor="discordId">Discord Id:</label><input name="discordId" onChange={setField(setDiscordId)} value={discordId} /></div>
-      <div><label htmlFor="discordDiscriminator">Discord Discriminator:</label><input name="discordDiscriminator" onChange={setField(setDiscordDiscriminator)} value={discordDiscriminator} /></div>
+      <TextField key="name" name="name" value={name} setter={setField(setName)} />
+      <TextField key="japaneseName" name="japaneseName" value={japaneseName} setter={setField(setJapaneseName)} />
+      <TextField key="email" name="email" value={email} setter={setField(setEmail)} />
+      <TextField key="discordUsername" name="discordUsername" value={discordUsername} setter={setField(setDiscordUsername)} />
+      <TextField key="discordId" name="discordId" value={discordId} setter={setField(setDiscordId)} />
+      <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
       <div><label htmlFor="discordReminders">Discord Reminders:</label><input name="discordReminders" type="checkbox" onChange={setBoolean(setDiscordReminders)} checked={discordReminders} /></div>
     </div>
   );
 }
+
+// change "name" to "Name: "
+// change "discordUsername" to "Discord Username: "
+function formatLabel(name) {
+  return name.split('').reduce((acc, c, i) => {
+    if (c === c.toUpperCase()) {
+      acc.push([c])
+    } else {
+      acc[acc.length - 1].push(i === 0 ? c.toUpperCase() : c)
+    };
+    return acc;
+  }, [[]]).map(a => a.join('')).join(' ').concat(': ');
+}
+
+function TextField({ name, value, setter }) {
+  return (
+    <div>
+      <label htmlFor={name}>{formatLabel(name)}</label>
+      <input name={name} onChange={setter} value={value} />
+    </div>
+  );
+}
+
