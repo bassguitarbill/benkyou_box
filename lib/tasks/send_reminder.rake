@@ -10,6 +10,7 @@ namespace :benkyou_box do
     puts "Sending Discord reminders"
     for u in User.select(&:has_discord?) do
       next unless u.submissions.today.empty?
+      next unless u.discord_reminders
       puts "Sending a reminder to #{u.name}(#{u.id})"
       data = {}
       data['username'] = u.discord_username
