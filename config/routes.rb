@@ -15,6 +15,9 @@ Rails.application.routes.draw do
         get "daily"
         post "submit"
       end
+      namespace :users do
+        put "update"
+      end
     end
   end
   get "prompts" => redirect("/")

@@ -27,6 +27,19 @@ export default function User() {
     }
   }
 
+  function submit() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+    fetch('/api/v1/users/update', {
+      method: 'PUT',
+      body: JSON.stringify({
+        name, japaneseName, email, discordUsername, discordId, discordDiscriminator, discordReminders,
+      }),
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+    }).then(() => location.reload());
+  }
+
   return (
     <div>
       <TextField key="name" name="name" value={name} setter={setField(setName)} />
@@ -36,6 +49,7 @@ export default function User() {
       <TextField key="discordId" name="discordId" value={discordId} setter={setField(setDiscordId)} />
       <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
       <div><label htmlFor="discordReminders">Discord Reminders:</label><input name="discordReminders" type="checkbox" onChange={setBoolean(setDiscordReminders)} checked={discordReminders} /></div>
+      <button onClick={submit}>Submit</button>
     </div>
   );
 }
@@ -61,4 +75,3 @@ function TextField({ name, value, setter }) {
     </div>
   );
 }
-
