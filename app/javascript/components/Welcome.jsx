@@ -66,6 +66,8 @@ export default function Welcome() {
         </Card>
       </For>
       <Link to="/prompts">Manage Prompts</Link>
+      <br />
+      <Link to="/user">Manage User Information</Link>
     </>
   );
 }

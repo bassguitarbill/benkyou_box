@@ -11,6 +11,7 @@ import Welcome from './Welcome';
 import Submissions from './Submissions';
 import NewSubmission from './NewSubmission';
 import Prompts from './Prompts';
+import User from './User';
 
 App.propTypes = {
   user: PropTypes.string
@@ -31,6 +32,9 @@ export default function App({ user }) {
           </Route>
           <Route path="/prompts/">
             <Prompts />
+          </Route>
+          <Route path="/user/">
+            <User />
           </Route>
           <Route path="*">
             <Welcome />
