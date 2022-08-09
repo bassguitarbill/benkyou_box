@@ -12,5 +12,6 @@ class Api::V1::UsersController < ApplicationController
       discord_discriminator: req['discordDiscriminator'],
       discord_reminders: req['discordReminders'],
     })
+    render json: current_user
   end
 end
