@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
 
 import Welcome from './Welcome';
@@ -13,16 +12,12 @@ import NewSubmission from './NewSubmission';
 import Prompts from './Prompts';
 import User from './User';
 
-App.propTypes = {
-  user: PropTypes.string
-};
-
 const UserContext = React.createContext(null);
 export default function App({ user }) {
   return (
     <UserContext.Provider value={user}>
       <Router>
-        <Link to="/">Home</Link>
+        <a href="/">Home</a>
         <Switch>
           <Route path="/submissions/new">
             <NewSubmission />

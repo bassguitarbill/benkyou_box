@@ -2,8 +2,9 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import Button from 'rsuite/Button';
+import Panel from 'rsuite/Panel';
+import Stack from 'rsuite/Stack';
 
 function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
 
@@ -13,12 +14,11 @@ function CurrentUser({ user }) {
     return (
       <div>
         <p>{`You've completed ${count} ${sp(count)} today!`}</p>
-        
         <Link to="/submissions">
-          <Button variant="primary">{'See mine'}</Button>
+          <Button appearance="primary">{'See mine'}</Button>
         </Link>
         <Link to="/submissions/new">
-          <Button variant="secondary">{'Submit more?'}</Button>
+          <Button appearance="default">{'Submit more?'}</Button>
         </Link>
       </div>
     );
@@ -27,7 +27,7 @@ function CurrentUser({ user }) {
       <div>
         <p>{`You haven't completed any ${sp(0)} today!`}</p>
         <Link to="/submissions/new">
-          <Button variant="primary">{'Let\'s fix that!'}</Button>
+          <Button appearance="primary">{'Let\'s fix that!'}</Button>
         </Link>
       </div>
     );
@@ -39,7 +39,7 @@ function OtherUser({ name, id, count }) {
     <div>
       <p>{`${name} has completed ${count} ${sp(count)} today.`}</p>
       <Link to={`/submissions?user=${id}`}>
-        <Button variant="primary">{`See ${name}'s submissions`}</Button>
+        <Button appearance="primary">{`See ${name}'s submissions`}</Button>
       </Link>
     </div>
   );
@@ -56,18 +56,18 @@ export default function Welcome() {
   }, []);
 
   return (
-    <>
-      <Card body>
-        <CurrentUser user={currentUserCount} />
-      </Card>
+    <Stack direction="column" spacing={10}>
+      <Panel shaded>
+          <CurrentUser user={currentUserCount} />
+      </Panel>
       <For each='user' of={ otherUserCounts }>
-        <Card body>
-          <OtherUser key={user.id} id={user.id} name={user.name} count={user.count} />
-        </Card>
+        <Panel shaded key={user.id}>
+            <OtherUser id={user.id} name={user.name} count={user.count} />
+        </Panel>
       </For>
       <Link to="/prompts">Manage Prompts</Link>
       <br />
       <Link to="/user">Manage User Information</Link>
-    </>
+    </Stack>
   );
 }
