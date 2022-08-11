@@ -21,3 +21,4 @@ var componentRequireContext = require.context("components", true);
 var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
 import "rsuite/dist/rsuite.min.css"
+import "styles/styles";

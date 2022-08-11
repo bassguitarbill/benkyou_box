@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
 import Button from 'rsuite/Button';
+import Loader from 'rsuite/Loader';
 import Panel from 'rsuite/Panel';
 import Stack from 'rsuite/Stack';
 
@@ -57,17 +58,22 @@ export default function Welcome() {
 
   return (
     <Stack direction="column" spacing={10}>
-      <Panel shaded>
-          <CurrentUser user={currentUserCount} />
-      </Panel>
-      <For each='user' of={ otherUserCounts }>
-        <Panel shaded key={user.id}>
-            <OtherUser id={user.id} name={user.name} count={user.count} />
-        </Panel>
-      </For>
-      <Link to="/prompts">Manage Prompts</Link>
-      <br />
-      <Link to="/user">Manage User Information</Link>
+      <Choose>
+        <When condition={counts.length > 0}>
+          <Panel shaded>
+            <CurrentUser user={currentUserCount} />
+          </Panel>
+          <For each='user' of={ otherUserCounts }>
+            <Panel shaded key={user.id}>
+              <OtherUser id={user.id} name={user.name} count={user.count} />
+            </Panel>
+          </For>
+          <Link to="/prompts">Manage Prompts</Link>
+        </When>
+        <When condition={counts.length === 0}>
+          <Loader size="lg" />
+        </When>
+      </Choose>
     </Stack>
   );
 }
