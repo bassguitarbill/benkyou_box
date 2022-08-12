@@ -14,9 +14,9 @@ export default function User() {
   const [japaneseName, setJapaneseName] = useState(user.japanese_name);
   const [email, setEmail] = useState(user.email);
 
-  const [discordUsername, setDiscordUsername] = useState(user.discord_username);
-  const [discordId, setDiscordId] = useState(user.discord_id);
-  const [discordDiscriminator, setDiscordDiscriminator] = useState(user.discord_discriminator);
+  const [discordUsername, setDiscordUsername] = useState(user.discord_username || '');
+  const [discordId, setDiscordId] = useState(user.discord_id || '');
+  const [discordDiscriminator, setDiscordDiscriminator] = useState(user.discord_discriminator || '');
 
   const [discordReminders, setDiscordReminders] = useState(user.discord_reminders);
 
