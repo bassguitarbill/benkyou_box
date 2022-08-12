@@ -54,21 +54,21 @@ export default function Prompts() {
   const [shouldReload, setShouldReload] = useState(false);
   const toaster = useToaster();
 
-  function addEntry(Col, ColSetter) {
+  function addEntry(col, colSetter) {
     return function() {
-      const id = Col.reduce((max, e) => Math.max(e.id, max), 0) + 1;
-      ColSetter(Col.concat({ id, content: '', weight: 1 }));
+      const id = lengths.concat(topics).concat(grammars).reduce((max, e) => Math.max(e.id, max), 0) + 1;
+      colSetter(col.concat({ id, content: '', weight: 1, category: col[0].category }));
     }
   }
 
-  function modifyEntry(Col, setCol) {
+  function modifyEntry(col, setCol) {
     return function(entryId, attribute, ev) {
-      const entryIndex = Col.findIndex(e => e.id === entryId);
-      const entry = Col[entryIndex];
+      const entryIndex = col.findIndex(e => e.id === entryId);
+      const entry = col[entryIndex];
       const newEntry = Object.assign({}, entry);
       newEntry[attribute] = ev.target.value;
 
-      const newCol = Col.map(e => e);
+      const newCol = col.map(e => e);
       newCol.splice(entryIndex, 1, newEntry);
       setCol(newCol);
     }
