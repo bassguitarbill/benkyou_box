@@ -50,7 +50,7 @@ export default function App({ user }) {
               </Nav>
             </Navbar>
           </Header>
-          <Content>
+          <Content className="content">
             <Switch>
               <Route path="/submissions/new">
                 <NewSubmission />
