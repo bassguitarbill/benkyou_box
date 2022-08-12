@@ -19,12 +19,12 @@ export default function NewSubmission() {
     fetch('/api/v1/prompts/generate').then(rsp => rsp.json()).then(rsp => setPrompt(generatePrompt(rsp)));
   }, []);
 
-  const handlePromptInput = e => {
-    setPrompt(e.target.value)
+  const handlePromptInput = value => {
+    setPrompt(value)
   };
 
-  const handleResponseInput = e => {
-    setResponse(e.target.value)
+  const handleResponseInput = value => {
+    setResponse(value)
   };
 
   const submit = () => {
@@ -47,11 +47,8 @@ export default function NewSubmission() {
         <Redirect to="/submissions" />
       </If>
       <Button size="sm" onClick={fetchPrompt}>Generate Prompt</Button>
-      <Divider />
       <Input className="new-submission-input" value={prompt} as="textarea" rows={3} placeholder="Prompt" onChange={handlePromptInput} />
-      <Divider />
       <Input className="new-submission-input" value={response} as="textarea" rows={3} placeholder="Response" onChange={handleResponseInput} />
-      <Divider />
       <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
   );

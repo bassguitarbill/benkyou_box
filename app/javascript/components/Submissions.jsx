@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import DatePicker from 'rsuite/DatePicker';
+import List from 'rsuite/List';
 
 import { UserContext } from './App';
 import Submission from './Submission';
@@ -21,10 +22,12 @@ export default function Submissions() {
   return (
     <div className="submissions">
       <h2 className="submissions-header">{`${userName}'s Submissions`}</h2>
-      <DatePicker value={new Date(date)} onChange={setDate}></DatePicker>
-      <For each='submission' of={submissions.submissions}>
-        <Submission key={submission.id} submission={submission} />
-      </For>
+      <DatePicker className="submissions-date-picker" value={new Date(date)} onChange={setDate}></DatePicker>
+      <List>
+        <For each='submission' of={submissions.submissions}>
+          <List.Item key={submission.id}><Submission submission={submission} /></List.Item>
+        </For>
+      </List>
     </div>
   );
 }
