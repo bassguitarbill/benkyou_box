@@ -1,8 +1,0 @@
-<div style="float: right">
-  <% if current_user.nil? %>
-    <%= link_to "Sign In", auth.sign_in_path %>
-  <% else %>
-    <span>Welcome, <%= current_user.name %></span>
-    <%= link_to "Sign Out", auth.sign_out_path %>
-  <% end %>
-</div>

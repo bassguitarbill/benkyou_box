@@ -1,8 +1,0 @@
-<div id="<%= name %>-container" class="promptColumn">
-  <ul id="<%= name %>-list">
-    <% for d in data %>
-      <li><%= d.content %>(<%= d.weight %>)</li>
-    <% end %>
-  </ul>
-  <%= submit_tag 'Add New', type: 'button', onclick: "addFields(\"#{name}\")" %>
-</div>
