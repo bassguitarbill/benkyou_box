@@ -1,24 +1,58 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+
+import FlexboxGrid from 'rsuite/FlexboxGrid';
+import Button from 'rsuite/Button';
+import Col from 'rsuite/Col';
+import Grid from 'rsuite/Grid';
+import Row from 'rsuite/Row';
+import Table from 'rsuite/Table';
+
 function PromptEntry({ entry, onModify }){
   const { id, content, weight } = entry;
   return (
-    <div>
-      <input onChange={onModify.bind(null, 'content')} value={content} />
-      <input onChange={onModify.bind(null, 'weight')} value={weight} />
-    </div>
+    <tr>
+      <td>
+        <input onChange={onModify.bind(null, 'content')} value={content} />
+      </td>
+      <td>
+        <input onChange={onModify.bind(null, 'weight')} value={weight} />
+      </td>
+    </tr>
   );
 }
 
-function PromptColumn({ name, entries, addEntry, modifyEntry }) {
+function PromptContent({ entry, onModify }) {
+  const { content } = entry;
+  return <input onChange={onModify.bind(null, 'content')} value={content} />
+}
+function PromptWeight({ entry, onModify }) {
+  const { weight } = entry;
+  return <input onChange={onModify.bind(null, 'weight')} value={weight} />
+}
+
+function PromptCol({ name, entries, addEntry, modifyEntry }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', }}>
-      <For each="entry" of={entries}>
-        <PromptEntry entry={entry} key={entry.id} onModify={modifyEntry.bind(null, entry.id)} />
-      </For>
-      <button onClick={addEntry}>Add Entry</button>
-    </div>
+    <FlexboxGrid.Item key={name} as={Col} md={8} xs={24}>
+      <div className="prompt-col">
+        <h4 className="prompt-col-header">{name}</h4>
+        <table className="prompt-col-table" data={entries}>
+          <thead>
+            <tr>
+              <th>Content</th>
+              <th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <For each="entry" of={entries}>
+              <PromptEntry key={entry.id} entry={entry} onModify={modifyEntry.bind(null, entry.id)} />
+            </For>
+          </tbody>
+        </table>
+        <Button className="prompt-col-add-entry-button" onClick={addEntry}>Add Entry</Button>
+      </div>
+    </FlexboxGrid.Item>
   );
 }
 
@@ -29,23 +63,23 @@ export default function Prompts() {
   const [grammars, setGrammars] = useState([]);
   const [shouldReload, setShouldReload] = useState(false);
 
-  function addEntry(column, columnSetter) {
+  function addEntry(Col, ColSetter) {
     return function() {
-      const id = column.reduce((max, e) => Math.max(e.id, max), 0) + 1;
-      columnSetter(column.concat({ id, content: '', weight: 1 }));
+      const id = Col.reduce((max, e) => Math.max(e.id, max), 0) + 1;
+      ColSetter(Col.concat({ id, content: '', weight: 1 }));
     }
   }
 
-  function modifyEntry(column, setColumn) {
+  function modifyEntry(Col, setCol) {
     return function(entryId, attribute, ev) {
-      const entryIndex = column.findIndex(e => e.id === entryId);
-      const entry = column[entryIndex];
+      const entryIndex = Col.findIndex(e => e.id === entryId);
+      const entry = Col[entryIndex];
       const newEntry = Object.assign({}, entry);
       newEntry[attribute] = ev.target.value;
 
-      const newColumn = column.map(e => e);
-      newColumn.splice(entryIndex, 1, newEntry);
-      setColumn(newColumn);
+      const newCol = Col.map(e => e);
+      newCol.splice(entryIndex, 1, newEntry);
+      setCol(newCol);
     }
   }
 
@@ -75,27 +109,27 @@ export default function Prompts() {
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '80%'}}>
-        <PromptColumn
-          name="lengths"
-          entries={lengths}
-          addEntry={addEntry(lengths, setLengths)}
-          modifyEntry={modifyEntry(lengths, setLengths)}
-        />
-        <PromptColumn
-          name="topics"
-          entries={topics}
-          addEntry={addEntry(topics, setTopics)}
-          modifyEntry={modifyEntry(topics, setTopics)}
-        />
-        <PromptColumn
-          name="grammars"
-          entries={grammars}
-          addEntry={addEntry(grammars, setGrammars)}
-          modifyEntry={modifyEntry(grammars, setGrammars)}
-        />
-      </div>
-      <button onClick={submit}>Submit</button>
+      <FlexboxGrid>
+          <PromptCol
+            name="lengths"
+            entries={lengths}
+            addEntry={addEntry(lengths, setLengths)}
+            modifyEntry={modifyEntry(lengths, setLengths)}
+          />
+          <PromptCol
+            name="topics"
+            entries={topics}
+            addEntry={addEntry(topics, setTopics)}
+            modifyEntry={modifyEntry(topics, setTopics)}
+          />
+          <PromptCol
+            name="grammars"
+            entries={grammars}
+            addEntry={addEntry(grammars, setGrammars)}
+            modifyEntry={modifyEntry(grammars, setGrammars)}
+          />
+      </FlexboxGrid>
+      <Col xs={24}><Button color="green" appearance="primary" onClick={submit}>Submit</Button></Col>
     </>
   );
 }

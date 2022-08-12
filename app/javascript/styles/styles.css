@@ -2,3 +2,17 @@ ul.rs-dropdown-menu-pull-right {
   left: unset !important;
   right: 0;
 }
+
+.prompt-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prompt-col-header {
+  text-transform: capitalize;
+}
+
+.prompt-col-add-entry-button {
+  margin-top: 5px;
+}
