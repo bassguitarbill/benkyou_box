@@ -5,7 +5,9 @@ import { UserContext } from './App';
 import Button from 'rsuite/Button';
 import Loader from 'rsuite/Loader';
 import Panel from 'rsuite/Panel';
-import Stack from 'rsuite/Stack';
+import Grid from 'rsuite/Grid';
+import Row from 'rsuite/Row';
+import Col from 'rsuite/Col';
 
 function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
 
@@ -57,23 +59,30 @@ export default function Welcome() {
   }, []);
 
   return (
-    <Stack direction="column" spacing={10}>
       <Choose>
         <When condition={counts.length > 0}>
-          <Panel shaded>
-            <CurrentUser user={currentUserCount} />
-          </Panel>
-          <For each='user' of={ otherUserCounts }>
-            <Panel shaded key={user.id}>
-              <OtherUser id={user.id} name={user.name} count={user.count} />
-            </Panel>
-          </For>
-          <Link to="/prompts">Manage Prompts</Link>
+          <Grid fluid>
+            <Row>
+              <Col xs={24} md={16} mdOffset={4}>
+                <Panel shaded>
+                  <CurrentUser user={currentUserCount} />
+                </Panel>
+              </Col>
+            </Row>
+            <For each='user' of={ otherUserCounts }>
+              <Row>
+                <Col xs={24} md={16} mdOffset={4}>
+                  <Panel shaded key={user.id}>
+                    <OtherUser id={user.id} name={user.name} count={user.count} />
+                  </Panel>
+                </Col>
+              </Row>
+            </For>
+          </Grid>
         </When>
         <When condition={counts.length === 0}>
           <Loader size="lg" />
         </When>
       </Choose>
-    </Stack>
   );
 }

@@ -44,6 +44,7 @@ export default function App({ user }) {
               <Nav pullRight reversed>
                 <Nav.Menu className="rs-dropdown-menu-pull-right" style={{ left: undefined, right: 0 }} icon={<MenuIcon />} noCaret>
                   <Nav.Item as={NavLink} href="/user">Modify User Information</Nav.Item>
+                  <Nav.Item as={NavLink} href="/prompts">Manage Prompts</Nav.Item>
                   <Nav.Item as={NavLink} href="/sign_out">Sign Out</Nav.Item>
                 </Nav.Menu>
               </Nav>
