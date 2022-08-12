@@ -1,16 +1,15 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-
-import FlexboxGrid from 'rsuite/FlexboxGrid';
 import Button from 'rsuite/Button';
 import Col from 'rsuite/Col';
-import Grid from 'rsuite/Grid';
-import Row from 'rsuite/Row';
-import Table from 'rsuite/Table';
+import FlexboxGrid from 'rsuite/FlexboxGrid';
+import Notification from 'rsuite/Notification';
+
+import { useToaster } from 'rsuite';
 
 function PromptEntry({ entry, onModify }){
-  const { id, content, weight } = entry;
+  const { content, weight } = entry;
   return (
     <tr>
       <td>
@@ -21,15 +20,6 @@ function PromptEntry({ entry, onModify }){
       </td>
     </tr>
   );
-}
-
-function PromptContent({ entry, onModify }) {
-  const { content } = entry;
-  return <input onChange={onModify.bind(null, 'content')} value={content} />
-}
-function PromptWeight({ entry, onModify }) {
-  const { weight } = entry;
-  return <input onChange={onModify.bind(null, 'weight')} value={weight} />
 }
 
 function PromptCol({ name, entries, addEntry, modifyEntry }) {
@@ -62,6 +52,7 @@ export default function Prompts() {
   const [topics, setTopics] = useState([]);
   const [grammars, setGrammars] = useState([]);
   const [shouldReload, setShouldReload] = useState(false);
+  const toaster = useToaster();
 
   function addEntry(Col, ColSetter) {
     return function() {
@@ -104,8 +95,14 @@ export default function Prompts() {
       headers: {
         'X-CSRF-Token': csrfToken,
       },
-    }).then(() => setShouldReload(true));
+    }).then(() => setShouldReload(true)
+    ).then(() => toaster.push(submitMessage, { placement: 'bottomCenter' })
+    ).then(() => setTimeout(() => toaster.clear(), 3000));
   };
+
+  const submitMessage = (
+    <Notification type="success" header="Successfully saved prompts"/>
+  );
 
   return (
     <>
