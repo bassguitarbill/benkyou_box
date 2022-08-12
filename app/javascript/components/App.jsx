@@ -40,7 +40,7 @@ export default function App({ user }) {
         <Container>
           <Header>
             <Navbar appearance="default">
-              <Navbar.Brand href="/">Home</Navbar.Brand>
+              <Navbar.Brand href="/">勉強Box</Navbar.Brand>
               <Nav pullRight reversed>
                 <Nav.Menu className="rs-dropdown-menu-pull-right" style={{ left: undefined, right: 0 }} icon={<MenuIcon />} noCaret>
                   <Nav.Item as={NavLink} href="/user">Modify User Information</Nav.Item>
