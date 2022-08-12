@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { UserContext } from './App';
 
 import Button from 'rsuite/Button';
+import Col from 'rsuite/Col';
+import Grid from 'rsuite/Grid';
 import Loader from 'rsuite/Loader';
 import Panel from 'rsuite/Panel';
-import Grid from 'rsuite/Grid';
 import Row from 'rsuite/Row';
-import Col from 'rsuite/Col';
 
 function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
 
@@ -70,7 +70,7 @@ export default function Welcome() {
               </Col>
             </Row>
             <For each='user' of={ otherUserCounts }>
-              <Row>
+              <Row key={user.id}>
                 <Col xs={24} md={16} mdOffset={4}>
                   <Panel shaded key={user.id}>
                     <OtherUser id={user.id} name={user.name} count={user.count} />
