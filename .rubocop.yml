@@ -1,0 +1,10 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+  NewCops: enable
+
+Style/Documentation:
+  Enabled: false

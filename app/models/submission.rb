@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 class Submission < ApplicationRecord
   belongs_to :user
 
   def self.today
-    self.created_on_date nil
+    created_on_date nil
   end
 
   def self.created_on_date(date)
-    
     date = date ? Date.parse(date) : Date.current
     offset = date.in_time_zone('Eastern Time (US & Canada)').utc_offset
     start = date.in_time_zone('UTC').beginning_of_day - offset

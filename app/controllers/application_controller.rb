@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Passwordless::ControllerHelpers # <-- This!
 
@@ -9,7 +11,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-
   def current_user
     @current_user ||= authenticate_by_session(User)
   end
@@ -20,6 +21,7 @@ class ApplicationController < ActionController::Base
 
   def require_user!
     return if current_user
+
     redirect_to auth.sign_in_path, flash: { error: 'You are not worthy!' }
   end
 

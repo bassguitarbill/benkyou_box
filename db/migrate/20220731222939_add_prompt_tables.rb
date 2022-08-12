@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddPromptTables < ActiveRecord::Migration[7.0]
   def change
     create_table :prompt_lengths do |t|
@@ -7,7 +9,7 @@ class AddPromptTables < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    
+
     create_table :prompt_topics do |t|
       t.string :content
       t.integer :weight, default: 1
@@ -15,7 +17,7 @@ class AddPromptTables < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-  
+
     create_table :prompt_grammars do |t|
       t.string :content
       t.integer :weight, default: 1

@@ -5,12 +5,13 @@ require 'discordrb'
 namespace :benkyou_box do
   desc "Sends a Discord reminder to any user who hasn't done a submission yet today"
   task send_reminder: [:environment] do
-    bot = Discordrb::Bot.new token: ENV['DISCORD_TOKEN']
+    bot = Discordrb::Bot.new token: ENV.fetch('DISCORD_TOKEN', nil)
 
-    puts "Sending Discord reminders"
-    for u in User.select(&:has_discord?) do
+    puts 'Sending Discord reminders'
+    User.select(&:discord?).each do |u|
       next unless u.submissions.today.empty?
       next unless u.discord_reminders
+
       puts "Sending a reminder to #{u.name}(#{u.id})"
       data = {}
       data['username'] = u.discord_username
