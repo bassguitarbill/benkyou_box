@@ -16,3 +16,14 @@ ul.rs-dropdown-menu-pull-right {
 .prompt-col-add-entry-button {
   margin-top: 5px;
 }
+
+.new-submission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.new-submission-input {
+  width: 60%;
+}
