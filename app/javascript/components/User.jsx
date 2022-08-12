@@ -1,6 +1,11 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Button from 'rsuite/Button';
+import Form from 'rsuite/Form';
+import Input from 'rsuite/Input';
+import Toggle from 'rsuite/Toggle';
+
 import { UserContext } from './App';
 
 export default function User() {
@@ -9,25 +14,19 @@ export default function User() {
   const [japaneseName, setJapaneseName] = useState(user.japanese_name);
   const [email, setEmail] = useState(user.email);
 
-  const [discordUsername, setDiscordUsername] = useState(user.discord_username);
-  const [discordId, setDiscordId] = useState(user.discord_id);
-  const [discordDiscriminator, setDiscordDiscriminator] = useState(user.discord_discriminator);
+  const [discordUsername, setDiscordUsername] = useState(user.discord_username || '');
+  const [discordId, setDiscordId] = useState(user.discord_id || '');
+  const [discordDiscriminator, setDiscordDiscriminator] = useState(user.discord_discriminator || '');
 
   const [discordReminders, setDiscordReminders] = useState(user.discord_reminders);
 
   function setField(setter) {
-    return function(event) {
-      setter(event.target.value);
+    return function(value) {
+      setter(value);
     }
   }
 
-  function setBoolean(setter) {
-    return function(event) {
-      setter(event.target.checked);
-    }
-  }
-
-  function submit() {
+ function submit() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content
     fetch('/api/v1/users/update', {
       method: 'PUT',
@@ -48,8 +47,11 @@ export default function User() {
       <TextField key="discordUsername" name="discordUsername" value={discordUsername} setter={setField(setDiscordUsername)} />
       <TextField key="discordId" name="discordId" value={discordId} setter={setField(setDiscordId)} />
       <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
-      <div><label htmlFor="discordReminders">Discord Reminders:</label><input name="discordReminders" type="checkbox" onChange={setBoolean(setDiscordReminders)} checked={discordReminders} /></div>
-      <button onClick={submit}>Submit</button>
+      <Form.Group>
+        <label htmlFor="discordReminders">Discord Reminders: </label>
+        <Toggle name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders}/>
+      </Form.Group>
+      <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
   );
 }
@@ -68,10 +70,11 @@ function formatLabel(name) {
 }
 
 function TextField({ name, value, setter }) {
+  const email = name === 'email';
   return (
-    <div>
+    <Form.Group>
       <label htmlFor={name}>{formatLabel(name)}</label>
-      <input name={name} onChange={setter} value={value} />
-    </div>
+      <Input name={name} onChange={setter} value={value} type={email ? 'email' : 'text'} />
+    </Form.Group>
   );
 }
