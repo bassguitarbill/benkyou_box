@@ -32,6 +32,10 @@ function SignOut() {
   return <></>;
 }
 
+function getBrandImage() {
+  return document.querySelector('meta[name="brand"]').content;
+}
+
 const UserContext = React.createContext(null);
 export default function App({ user }) {
   return (
@@ -41,7 +45,7 @@ export default function App({ user }) {
           <Header>
             <Navbar appearance="default">
               <Navbar.Brand href="/" style={{ paddingTop: "0px" }}>
-                <img src="/assets/favicon/bb.png" height="56px"></img>
+                <img src={getBrandImage()} height="56px"></img>
               </Navbar.Brand>
               <Nav pullRight reversed>
                 <Nav.Menu className="rs-dropdown-menu-pull-right" style={{ left: undefined, right: 0 }} icon={<MenuIcon />} noCaret>
