@@ -45,6 +45,7 @@ export default function User() {
     }).then(() => window.location.reload());
   });
 
+  /* eslint-disable jsx-a11y/label-has-associated-control */
   return (
     <div>
       <TextField key="name" name="name" value={name} setter={setField(setName)} />
@@ -60,6 +61,7 @@ export default function User() {
       <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
   );
+  /* eslint-enable jsx-a11y/label-has-associated-control */
 }
 
 // change "name" to "Name: "

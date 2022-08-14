@@ -21,11 +21,13 @@ import Prompts from './Prompts';
 import User from './User';
 import UserContext from './UserContext';
 
+/* eslint-disable react/prop-types, react/jsx-props-no-spreading */
 const NavLink = forwardRef(({ href, children, ...rest }, ref) => (
   <Link ref={ref} to={href} {...rest}>
     {children}
   </Link>
 ));
+/* eslint-enable react/prop-types, react/jsx-props-no-spreading */
 
 function SignOut() {
   window.location.replace('/sign_out');
