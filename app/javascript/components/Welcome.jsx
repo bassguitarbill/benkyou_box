@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Button from 'rsuite/Button';
@@ -9,7 +10,13 @@ import Panel from 'rsuite/Panel';
 import Row from 'rsuite/Row';
 import { UserContext } from './App';
 
-function sp(count) { return `submission${count != 1 ? 's' : ''}`; }
+const userType = {
+  name: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+};
+
+function sp(count) { return `submission${count !== 1 ? 's' : ''}`; }
 
 function CurrentUser({ user }) {
   const { count } = user;
@@ -35,8 +42,10 @@ function CurrentUser({ user }) {
     </div>
   );
 }
+CurrentUser.propTypes = { user: userType.isRequired };
 
-function OtherUser({ name, id, count }) {
+function OtherUser({ user }) {
+  const { name, id, count } = user;
   return (
     <div>
       <p>{`${name} has completed ${count} ${sp(count)} today.`}</p>
@@ -46,6 +55,20 @@ function OtherUser({ name, id, count }) {
     </div>
   );
 }
+OtherUser.propTypes = { user: userType.isRequired };
+
+function generateOtherUser(user) {
+  return (
+    <Row key={user.id}>
+      <Col xs={24} md={16} mdOffset={4}>
+        <Panel shaded key={user.id}>
+          <OtherUser user={user} />
+        </Panel>
+      </Col>
+    </Row>
+  );
+}
+generateOtherUser.propTypes = userType;
 
 export default function Welcome() {
   const currentUser = useContext(UserContext);
@@ -68,15 +91,7 @@ export default function Welcome() {
               </Panel>
             </Col>
           </Row>
-          <For each="user" of={otherUserCounts}>
-            <Row key={user.id}>
-              <Col xs={24} md={16} mdOffset={4}>
-                <Panel shaded key={user.id}>
-                  <OtherUser id={user.id} name={user.name} count={user.count} />
-                </Panel>
-              </Col>
-            </Row>
-          </For>
+          <For each="user" of={otherUserCounts} body={generateOtherUser} />
         </Grid>
       </When>
       <When condition={counts.length === 0}>
