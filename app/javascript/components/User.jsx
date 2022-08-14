@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'rsuite/Button';
@@ -6,7 +6,7 @@ import Form from 'rsuite/Form';
 import Input from 'rsuite/Input';
 import Toggle from 'rsuite/Toggle';
 
-import { UserContext } from './App';
+import UserContext from './UserContext';
 
 export default function User() {
   const user = useContext(UserContext);
@@ -21,24 +21,31 @@ export default function User() {
   const [discordReminders, setDiscordReminders] = useState(user.discord_reminders);
 
   function setField(setter) {
-    return function(value) {
+    return (value) => {
       setter(value);
-    }
+    };
   }
 
- function submit() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+  const submit = useCallback(() => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     fetch('/api/v1/users/update', {
       method: 'PUT',
       body: JSON.stringify({
-        name, japaneseName, email, discordUsername, discordId, discordDiscriminator, discordReminders,
+        name,
+        japaneseName,
+        email,
+        discordUsername,
+        discordId,
+        discordDiscriminator,
+        discordReminders,
       }),
       headers: {
         'X-CSRF-Token': csrfToken,
       },
-    }).then(() => location.reload());
-  }
+    }).then(() => window.location.reload());
+  });
 
+  /* eslint-disable jsx-a11y/label-has-associated-control */
   return (
     <div>
       <TextField key="name" name="name" value={name} setter={setField(setName)} />
@@ -49,11 +56,12 @@ export default function User() {
       <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
       <Form.Group>
         <label htmlFor="discordReminders">Discord Reminders: </label>
-        <Toggle name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders}/>
+        <Toggle id="discordReminders" name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders} />
       </Form.Group>
       <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
   );
+  /* eslint-enable jsx-a11y/label-has-associated-control */
 }
 
 // change "name" to "Name: "
@@ -61,12 +69,13 @@ export default function User() {
 function formatLabel(name) {
   return name.split('').reduce((acc, c, i) => {
     if (c === c.toUpperCase()) {
-      acc.push([c])
+      acc.push([c]);
     } else {
-      acc[acc.length - 1].push(i === 0 ? c.toUpperCase() : c)
-    };
+      acc[acc.length - 1].push(i === 0 ? c.toUpperCase() : c);
+    }
     return acc;
-  }, [[]]).map(a => a.join('')).join(' ').concat(': ');
+  }, [[]]).map((a) => a.join('')).join(' ')
+    .concat(': ');
 }
 
 function TextField({ name, value, setter }) {
@@ -78,3 +87,8 @@ function TextField({ name, value, setter }) {
     </Form.Group>
   );
 }
+TextField.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  setter: PropTypes.func.isRequired,
+};
