@@ -20,5 +20,5 @@ Submission.propTypes = {
     id: PropTypes.number,
     prompt: PropTypes.string,
     response: PropTypes.string,
-  }),
+  }).isRequired,
 };
