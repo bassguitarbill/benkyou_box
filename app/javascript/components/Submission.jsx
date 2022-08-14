@@ -2,14 +2,28 @@ import React, { useState, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'rsuite/Button';
+import Input from 'rsuite/Input';
+import IconButton from 'rsuite/IconButton';
+import CheckOutlineIcon from '@rsuite/icons/CheckOutline';
+import PlusIcon from '@rsuite/icons/Plus';
 
 import UserContext from './UserContext';
 
-export default function Submission({ submission }) {
-  const { /* id, */ prompt, response, translations } = submission;
+export default function Submission({ submission, shouldReload }) {
+  const {
+    id,
+    prompt,
+    response,
+    translations,
+  } = submission;
   const currentUser = useContext(UserContext);
 
   const [showOwnerTranslation, setShowOwnerTranslation] = useState(false);
+  const [editableTranslation, setEditableTranslation] = useState('');
+  const [showEditTranslation, setShowEditTranslation] = useState(false);
+  const toggleShowEditTranslation = useCallback(() => {
+    setShowEditTranslation(!showEditTranslation);
+  });
   const ownerTranslation = translations.find((t) => t.user_id === submission.user_id);
 
   const isOwner = submission.user_id === currentUser.id;
@@ -18,7 +32,22 @@ export default function Submission({ submission }) {
     () => setShowOwnerTranslation(!showOwnerTranslation),
   );
 
-  const showHideTranslations = `${showOwnerTranslation ? 'Hide' : 'Show'} Translations`;
+  const showHideTranslations = `${showOwnerTranslation ? 'Hide' : 'Show'} Translation`;
+
+  const saveEditableTranslation = () => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    fetch('/api/v1/translations/update', {
+      method: 'put',
+      body: JSON.stringify({
+        userId: currentUser.id,
+        submissionId: id,
+        content: editableTranslation,
+      }),
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+    }).then(() => shouldReload(true));
+  };
 
   return (
     <div>
@@ -29,6 +58,19 @@ export default function Submission({ submission }) {
         <dd>{response}</dd>
         <Choose>
           <When condition={isOwner}>
+            <If condition={!ownerTranslation}>
+              <If condition={showEditTranslation}>
+                <Input as="textarea" value={editableTranslation} onChange={setEditableTranslation} />
+                <IconButton icon={<CheckOutlineIcon />} onClick={saveEditableTranslation}>
+                  Save Translation
+                </IconButton>
+              </If>
+              <If condition={!showEditTranslation}>
+                <IconButton icon={<PlusIcon />} onClick={toggleShowEditTranslation}>
+                  Add Translation
+                </IconButton>
+              </If>
+            </If>
             <If condition={!!ownerTranslation}>
               <dt>Translation</dt>
               <dd>{ownerTranslation.content}</dd>
