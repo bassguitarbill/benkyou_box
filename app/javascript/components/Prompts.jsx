@@ -8,18 +8,34 @@ import Notification from 'rsuite/Notification';
 
 import { useToaster } from 'rsuite';
 
+const entryType = PropTypes.shape({
+  content: PropTypes.string,
+  weight: PropTypes.number,
+  id: PropTypes.number.isRequired,
+});
+
 function PromptEntry({ entry, onModify }) {
   const { content, weight } = entry;
   return (
     <tr>
       <td>
-        <input onChange={onModify.bind(null, 'content')} value={content} />
+        <input onChange={onModify.bind(null, entry.id, 'content')} value={content} />
       </td>
       <td>
-        <input onChange={onModify.bind(null, 'weight')} value={weight} />
+        <input onChange={onModify.bind(null, entry.id, 'weight')} value={weight} />
       </td>
     </tr>
   );
+}
+PromptEntry.propTypes = {
+  entry: entryType.isRequired,
+  onModify: PropTypes.func.isRequired,
+};
+
+function generatePromptEntry(onModify) {
+  return function gpe(entry) {
+    return <PromptEntry key={entry.id} entry={entry} onModify={onModify} />;
+  };
 }
 
 function PromptCol({
@@ -37,9 +53,7 @@ function PromptCol({
             </tr>
           </thead>
           <tbody>
-            <For each="entry" of={entries}>
-              <PromptEntry key={entry.id} entry={entry} onModify={modifyEntry.bind(null, entry.id)} />
-            </For>
+            <For each="entry" of={entries} body={generatePromptEntry(modifyEntry)} />
           </tbody>
         </table>
         <Button className="prompt-col-add-entry-button" onClick={addEntry}>Add Entry</Button>
@@ -47,6 +61,12 @@ function PromptCol({
     </FlexboxGrid.Item>
   );
 }
+PromptCol.propTypes = {
+  name: PropTypes.string.isRequired,
+  entries: PropTypes.arrayOf(entryType).isRequired,
+  addEntry: PropTypes.func.isRequired,
+  modifyEntry: PropTypes.func.isRequired,
+};
 
 export default function Prompts() {
   const [lengths, setLengths] = useState([]);
@@ -56,8 +76,8 @@ export default function Prompts() {
   const toaster = useToaster();
 
   function addEntry(col, colSetter) {
-    return function () {
-      const id = lengths.concat(topics).concat(grammars).reduce((max, e) => Math.max(e.id, max), 0) + 1;
+    return () => {
+      const id = [lengths, topics, grammars].flat().reduce((max, e) => Math.max(e.id, max), 0) + 1;
       colSetter(col.concat({
         id, content: '', weight: 1, category: col[0].category,
       }));
@@ -65,7 +85,7 @@ export default function Prompts() {
   }
 
   function modifyEntry(col, setCol) {
-    return function (entryId, attribute, ev) {
+    return (entryId, attribute, ev) => {
       const entryIndex = col.findIndex((e) => e.id === entryId);
       const entry = col[entryIndex];
       const newEntry = { ...entry };
@@ -79,12 +99,15 @@ export default function Prompts() {
 
   useEffect(() => {
     fetch('/api/v1/prompts/fetch').then((r) => r.json()).then((r) => {
-      const { lengths, topics, grammars } = r;
-      setLengths(lengths);
-      setTopics(topics);
-      setGrammars(grammars);
+      setLengths(r.lengths);
+      setTopics(r.topics);
+      setGrammars(r.grammars);
     }).then(() => setShouldReload(false));
   }, [shouldReload]);
+
+  const submitMessage = (
+    <Notification type="success" header="Successfully saved prompts" />
+  );
 
   const submit = () => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -100,10 +123,6 @@ export default function Prompts() {
       },
     }).then(() => setShouldReload(true)).then(() => toaster.push(submitMessage, { placement: 'bottomCenter' })).then(() => setTimeout(() => toaster.clear(), 3000));
   };
-
-  const submitMessage = (
-    <Notification type="success" header="Successfully saved prompts" />
-  );
 
   return (
     <>
