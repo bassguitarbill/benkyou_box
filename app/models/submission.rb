@@ -2,6 +2,7 @@
 
 class Submission < ApplicationRecord
   belongs_to :user
+  has_many :translations
 
   def self.today
     created_on_date nil

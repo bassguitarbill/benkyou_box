@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       namespace :users do
         put 'update'
       end
+      namespace :translations do
+        put 'update'
+      end
     end
   end
   get 'prompts' => redirect('/')

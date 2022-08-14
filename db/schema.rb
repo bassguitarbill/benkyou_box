@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_12_185102) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_14_114034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_12_185102) do
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end
 
+  create_table "translations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "submission_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["submission_id"], name: "index_translations_on_submission_id"
+    t.index ["user_id"], name: "index_translations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "name"
@@ -62,4 +72,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_12_185102) do
 
   add_foreign_key "prompt_fragments", "users", column: "added_by_id"
   add_foreign_key "submissions", "users"
+  add_foreign_key "translations", "submissions"
+  add_foreign_key "translations", "users"
 end

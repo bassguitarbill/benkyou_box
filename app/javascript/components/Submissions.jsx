@@ -15,16 +15,20 @@ import UserContext from './UserContext';
 import Submission from './Submission';
 import { useQuery } from '../util';
 
-function generateSubmission(submission) {
-  return (
+/* eslint-disable */
+function generateSubmission(shouldReload) {
+  return (submission) => (
     <List.Item key={submission.id}>
-      <Submission submission={submission} />
+      <Submission submission={submission} shouldReload={shouldReload}/>
     </List.Item>
   );
 }
+/* eslint-enable */
+
 export default function Submissions() {
   const [submissions, setSubmissions] = useState({ user: null, submissions: [] });
   const [date, setDate] = useState(new Date());
+  const [shouldReload, setShouldReload] = useState(false);
 
   const currentUser = useContext(UserContext);
   const userId = useQuery().get('user') || currentUser.id;
@@ -43,8 +47,8 @@ export default function Submissions() {
   });
 
   useEffect(() => {
-    fetch(`/api/v1/submissions/daily?date=${date}&user=${userId}`).then((rsp) => rsp.json()).then((rsp) => setSubmissions(rsp));
-  }, [userId, date]);
+    fetch(`/api/v1/submissions/daily?date=${date}&user=${userId}`).then((rsp) => rsp.json()).then((rsp) => setSubmissions(rsp)).then(() => setShouldReload(false));
+  }, [userId, date, shouldReload]);
 
   return (
     <div className="submissions">
@@ -55,7 +59,7 @@ export default function Submissions() {
         <Button appearance="link" onClick={nextDay}><PageNext style={{ fontSize: '3em' }} /></Button>
       </div>
       <List>
-        <For each="submission" of={submissions.submissions} body={generateSubmission} />
+        <For each="submission" of={submissions.submissions} body={generateSubmission(setShouldReload)} />
       </List>
     </div>
   );
