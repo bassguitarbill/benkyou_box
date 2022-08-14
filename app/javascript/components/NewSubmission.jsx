@@ -16,19 +16,19 @@ export default function NewSubmission() {
   const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const fetchPrompt = useCallback(() => {
-    fetch('/api/v1/prompts/generate').then(rsp => rsp.json()).then(rsp => setPrompt(generatePrompt(rsp)));
+    fetch('/api/v1/prompts/generate').then((rsp) => rsp.json()).then((rsp) => setPrompt(generatePrompt(rsp)));
   }, []);
 
-  const handlePromptInput = value => {
-    setPrompt(value)
+  const handlePromptInput = (value) => {
+    setPrompt(value);
   };
 
-  const handleResponseInput = value => {
-    setResponse(value)
+  const handleResponseInput = (value) => {
+    setResponse(value);
   };
 
   const submit = () => {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     fetch('/api/v1/submissions/submit', {
       method: 'POST',
       body: JSON.stringify({

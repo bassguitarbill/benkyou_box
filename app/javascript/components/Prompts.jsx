@@ -8,7 +8,7 @@ import Notification from 'rsuite/Notification';
 
 import { useToaster } from 'rsuite';
 
-function PromptEntry({ entry, onModify }){
+function PromptEntry({ entry, onModify }) {
   const { content, weight } = entry;
   return (
     <tr>
@@ -22,7 +22,9 @@ function PromptEntry({ entry, onModify }){
   );
 }
 
-function PromptCol({ name, entries, addEntry, modifyEntry }) {
+function PromptCol({
+  name, entries, addEntry, modifyEntry,
+}) {
   return (
     <FlexboxGrid.Item key={name} as={Col} md={8} xs={24}>
       <div className="prompt-col">
@@ -46,7 +48,6 @@ function PromptCol({ name, entries, addEntry, modifyEntry }) {
   );
 }
 
-
 export default function Prompts() {
   const [lengths, setLengths] = useState([]);
   const [topics, setTopics] = useState([]);
@@ -55,27 +56,29 @@ export default function Prompts() {
   const toaster = useToaster();
 
   function addEntry(col, colSetter) {
-    return function() {
+    return function () {
       const id = lengths.concat(topics).concat(grammars).reduce((max, e) => Math.max(e.id, max), 0) + 1;
-      colSetter(col.concat({ id, content: '', weight: 1, category: col[0].category }));
-    }
+      colSetter(col.concat({
+        id, content: '', weight: 1, category: col[0].category,
+      }));
+    };
   }
 
   function modifyEntry(col, setCol) {
-    return function(entryId, attribute, ev) {
-      const entryIndex = col.findIndex(e => e.id === entryId);
+    return function (entryId, attribute, ev) {
+      const entryIndex = col.findIndex((e) => e.id === entryId);
       const entry = col[entryIndex];
-      const newEntry = Object.assign({}, entry);
+      const newEntry = { ...entry };
       newEntry[attribute] = ev.target.value;
 
-      const newCol = col.map(e => e);
+      const newCol = col.map((e) => e);
       newCol.splice(entryIndex, 1, newEntry);
       setCol(newCol);
-    }
+    };
   }
 
   useEffect(() => {
-    fetch('/api/v1/prompts/fetch').then(r => r.json()).then(r => {
+    fetch('/api/v1/prompts/fetch').then((r) => r.json()).then((r) => {
       const { lengths, topics, grammars } = r;
       setLengths(lengths);
       setTopics(topics);
@@ -84,47 +87,45 @@ export default function Prompts() {
   }, [shouldReload]);
 
   const submit = () => {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     fetch('/api/v1/prompts/update', {
       method: 'PUT',
       body: JSON.stringify({
         lengths,
         topics,
-        grammars
+        grammars,
       }),
       headers: {
         'X-CSRF-Token': csrfToken,
       },
-    }).then(() => setShouldReload(true)
-    ).then(() => toaster.push(submitMessage, { placement: 'bottomCenter' })
-    ).then(() => setTimeout(() => toaster.clear(), 3000));
+    }).then(() => setShouldReload(true)).then(() => toaster.push(submitMessage, { placement: 'bottomCenter' })).then(() => setTimeout(() => toaster.clear(), 3000));
   };
 
   const submitMessage = (
-    <Notification type="success" header="Successfully saved prompts"/>
+    <Notification type="success" header="Successfully saved prompts" />
   );
 
   return (
     <>
       <FlexboxGrid>
-          <PromptCol
-            name="lengths"
-            entries={lengths}
-            addEntry={addEntry(lengths, setLengths)}
-            modifyEntry={modifyEntry(lengths, setLengths)}
-          />
-          <PromptCol
-            name="topics"
-            entries={topics}
-            addEntry={addEntry(topics, setTopics)}
-            modifyEntry={modifyEntry(topics, setTopics)}
-          />
-          <PromptCol
-            name="grammars"
-            entries={grammars}
-            addEntry={addEntry(grammars, setGrammars)}
-            modifyEntry={modifyEntry(grammars, setGrammars)}
-          />
+        <PromptCol
+          name="lengths"
+          entries={lengths}
+          addEntry={addEntry(lengths, setLengths)}
+          modifyEntry={modifyEntry(lengths, setLengths)}
+        />
+        <PromptCol
+          name="topics"
+          entries={topics}
+          addEntry={addEntry(topics, setTopics)}
+          modifyEntry={modifyEntry(topics, setTopics)}
+        />
+        <PromptCol
+          name="grammars"
+          entries={grammars}
+          addEntry={addEntry(grammars, setGrammars)}
+          modifyEntry={modifyEntry(grammars, setGrammars)}
+        />
       </FlexboxGrid>
       <Col xs={24}><Button color="green" appearance="primary" onClick={submit}>Submit</Button></Col>
     </>

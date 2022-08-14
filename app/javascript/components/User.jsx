@@ -21,13 +21,13 @@ export default function User() {
   const [discordReminders, setDiscordReminders] = useState(user.discord_reminders);
 
   function setField(setter) {
-    return function(value) {
+    return function (value) {
       setter(value);
-    }
+    };
   }
 
- function submit() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+  function submit() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     fetch('/api/v1/users/update', {
       method: 'PUT',
       body: JSON.stringify({
@@ -49,7 +49,7 @@ export default function User() {
       <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
       <Form.Group>
         <label htmlFor="discordReminders">Discord Reminders: </label>
-        <Toggle name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders}/>
+        <Toggle name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders} />
       </Form.Group>
       <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
@@ -61,12 +61,13 @@ export default function User() {
 function formatLabel(name) {
   return name.split('').reduce((acc, c, i) => {
     if (c === c.toUpperCase()) {
-      acc.push([c])
+      acc.push([c]);
     } else {
-      acc[acc.length - 1].push(i === 0 ? c.toUpperCase() : c)
-    };
+      acc[acc.length - 1].push(i === 0 ? c.toUpperCase() : c);
+    }
     return acc;
-  }, [[]]).map(a => a.join('')).join(' ').concat(': ');
+  }, [[]]).map((a) => a.join('')).join(' ')
+    .concat(': ');
 }
 
 function TextField({ name, value, setter }) {

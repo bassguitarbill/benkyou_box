@@ -1,12 +1,12 @@
-import React, { forwardRef } from 'react'
-import PropTypes from 'prop-types'
+import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
   Link,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 import Container from 'rsuite/Container';
 import Content from 'rsuite/Content';
@@ -44,8 +44,8 @@ export default function App({ user }) {
         <Container>
           <Header>
             <Navbar appearance="default">
-              <Navbar.Brand href="/" style={{ paddingTop: "0px" }}>
-                <img src={getBrandImage()} height="56px"></img>
+              <Navbar.Brand href="/" style={{ paddingTop: '0px' }}>
+                <img src={getBrandImage()} height="56px" />
               </Navbar.Brand>
               <Nav pullRight reversed>
                 <Nav.Menu className="rs-dropdown-menu-pull-right" style={{ left: undefined, right: 0 }} icon={<MenuIcon />} noCaret>
@@ -84,4 +84,4 @@ export default function App({ user }) {
   );
 }
 
-export { UserContext }
+export { UserContext };
