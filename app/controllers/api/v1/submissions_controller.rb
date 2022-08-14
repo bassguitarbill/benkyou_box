@@ -13,8 +13,13 @@ module Api
 
       def daily
         user = User.find(params[:user])
-        submissions = user.submissions.created_on_date params[:date]
-        render json: { user: user, submissions: submissions }
+        submissions = user.submissions.created_on_date(params[:date]).includes(:translations)
+        submissions_with_translations = submissions.map do |submission|
+          s = submission.attributes
+          s['translations'] = submission.translations.map(&:attributes)
+          s
+        end
+        render json: { user: user, submissions: submissions_with_translations }
       end
 
       def submit
