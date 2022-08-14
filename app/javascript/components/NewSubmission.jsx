@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import Button from 'rsuite/Button';
-import Divider from 'rsuite/Divider';
 import Input from 'rsuite/Input';
 
 function generatePrompt({ length, topic, grammar }) {
