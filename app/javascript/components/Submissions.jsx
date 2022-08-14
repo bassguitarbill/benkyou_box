@@ -1,4 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 
 import Button from 'rsuite/Button';
 import DatePicker from 'rsuite/DatePicker';
@@ -10,6 +15,13 @@ import { UserContext } from './App';
 import Submission from './Submission';
 import { useQuery } from '../util';
 
+function generateSubmission(submission) {
+  return (
+    <List.Item key={submission.id}>
+      <Submission submission={submission} />
+    </List.Item>
+  );
+}
 export default function Submissions() {
   const [submissions, setSubmissions] = useState({ user: null, submissions: [] });
   const [date, setDate] = useState(new Date());
@@ -18,17 +30,17 @@ export default function Submissions() {
   const userId = useQuery().get('user') || currentUser.id;
   const userName = submissions.user?.name;
 
-  function previousDay() {
+  const previousDay = useCallback(() => {
     const d = new Date(date);
     d.setDate(d.getDate() - 1);
     setDate(d);
-  }
+  });
 
-  function nextDay() {
+  const nextDay = useCallback(() => {
     const d = new Date(date);
     d.setDate(d.getDate() + 1);
     setDate(d);
-  }
+  });
 
   useEffect(() => {
     fetch(`/api/v1/submissions/daily?date=${date}&user=${userId}`).then((rsp) => rsp.json()).then((rsp) => setSubmissions(rsp));
@@ -43,9 +55,7 @@ export default function Submissions() {
         <Button appearance="link" onClick={nextDay}><PageNext style={{ fontSize: '3em' }} /></Button>
       </div>
       <List>
-        <For each="submission" of={submissions.submissions}>
-          <List.Item key={submission.id}><Submission submission={submission} /></List.Item>
-        </For>
+        <For each="submission" of={submissions.submissions} body={generateSubmission} />
       </List>
     </div>
   );
