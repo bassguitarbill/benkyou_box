@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'rsuite/Button';
@@ -21,23 +21,29 @@ export default function User() {
   const [discordReminders, setDiscordReminders] = useState(user.discord_reminders);
 
   function setField(setter) {
-    return function (value) {
+    return (value) => {
       setter(value);
     };
   }
 
-  function submit() {
+  const submit = useCallback(() => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     fetch('/api/v1/users/update', {
       method: 'PUT',
       body: JSON.stringify({
-        name, japaneseName, email, discordUsername, discordId, discordDiscriminator, discordReminders,
+        name,
+        japaneseName,
+        email,
+        discordUsername,
+        discordId,
+        discordDiscriminator,
+        discordReminders,
       }),
       headers: {
         'X-CSRF-Token': csrfToken,
       },
-    }).then(() => location.reload());
-  }
+    }).then(() => window.location.reload());
+  });
 
   return (
     <div>
@@ -49,7 +55,7 @@ export default function User() {
       <TextField key="discordDiscriminator" name="discordDiscriminator" value={discordDiscriminator} setter={setField(setDiscordDiscriminator)} />
       <Form.Group>
         <label htmlFor="discordReminders">Discord Reminders: </label>
-        <Toggle name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders} />
+        <Toggle id="discordReminders" name="discordReminders" onChange={setField(setDiscordReminders)} checked={discordReminders} />
       </Form.Group>
       <Button appearance="primary" onClick={submit}>Submit</Button>
     </div>
@@ -79,3 +85,8 @@ function TextField({ name, value, setter }) {
     </Form.Group>
   );
 }
+TextField.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  setter: PropTypes.func.isRequired,
+};
