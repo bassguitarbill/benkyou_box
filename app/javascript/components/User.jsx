@@ -6,7 +6,7 @@ import Form from 'rsuite/Form';
 import Input from 'rsuite/Input';
 import Toggle from 'rsuite/Toggle';
 
-import { UserContext } from './App';
+import UserContext from './UserContext';
 
 export default function User() {
   const user = useContext(UserContext);

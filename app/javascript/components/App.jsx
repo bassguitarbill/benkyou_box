@@ -20,6 +20,7 @@ import Submissions from './Submissions';
 import NewSubmission from './NewSubmission';
 import Prompts from './Prompts';
 import User from './User';
+import UserContext from './UserContext';
 
 const NavLink = forwardRef(({ href, children, ...rest }, ref) => (
   <Link ref={ref} to={href} {...rest}>
@@ -36,7 +37,6 @@ function getBrandImage() {
   return document.querySelector('meta[name="brand"]').content;
 }
 
-const UserContext = React.createContext(null);
 export default function App({ user }) {
   return (
     <UserContext.Provider value={user}>

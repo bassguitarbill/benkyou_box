@@ -8,7 +8,7 @@ import Grid from 'rsuite/Grid';
 import Loader from 'rsuite/Loader';
 import Panel from 'rsuite/Panel';
 import Row from 'rsuite/Row';
-import { UserContext } from './App';
+import UserContext from './UserContext';
 
 const userType = {
   name: PropTypes.string.isRequired,

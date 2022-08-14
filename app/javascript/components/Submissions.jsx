@@ -11,7 +11,7 @@ import List from 'rsuite/List';
 
 import PageNext from '@rsuite/icons/PageNext';
 import PagePrevious from '@rsuite/icons/PagePrevious';
-import { UserContext } from './App';
+import UserContext from './UserContext';
 import Submission from './Submission';
 import { useQuery } from '../util';
 
