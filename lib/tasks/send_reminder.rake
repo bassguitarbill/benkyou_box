@@ -18,7 +18,7 @@ namespace :benkyou_box do
       data['id'] = u.discord_id
       data['discriminator'] = u.discord_discriminator
       user = Discordrb::User.new(data, bot)
-      user.pm "Hello #{u.name}! Don't forget to do your study today! https://intense-plains-70311.herokuapp.com"
+      user.pm "Hello #{u.name}! Don't forget to do your study today! https://benkyou-box.herokuapp.com"
     end
   end
 end
