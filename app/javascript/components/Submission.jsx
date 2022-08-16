@@ -9,6 +9,14 @@ import PlusIcon from '@rsuite/icons/Plus';
 
 import UserContext from './UserContext';
 
+function split(str) {
+  return (
+    <div>
+      { str.split('\n').map(l => <><span>{l}</span><br /></>) }
+    </div>
+  );
+}
+
 export default function Submission({ submission, shouldReload }) {
   const {
     id,
@@ -55,7 +63,7 @@ export default function Submission({ submission, shouldReload }) {
         <dt>Prompt</dt>
         <dd>{prompt}</dd>
         <dt>Response</dt>
-        <dd>{response}</dd>
+        <dd>{split(response)}</dd>
         <Choose>
           <When condition={isOwner}>
             <If condition={!ownerTranslation}>
@@ -73,14 +81,14 @@ export default function Submission({ submission, shouldReload }) {
             </If>
             <If condition={!!ownerTranslation}>
               <dt>Translation</dt>
-              <dd>{ownerTranslation.content}</dd>
+              <dd>{split(ownerTranslation.content)}</dd>
             </If>
           </When>
           <When condition={!isOwner}>
             <If condition={!!ownerTranslation}>
               <If condition={showOwnerTranslation}>
                 <dt>Translation</dt>
-                <dd>{ownerTranslation.content}</dd>
+                <dd>{split(ownerTranslation.content)}</dd>
               </If>
               <Button appearance="link" onClick={toggleShowOwnerTranslation}>{showHideTranslations}</Button>
             </If>
